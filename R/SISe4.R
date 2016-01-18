@@ -242,27 +242,27 @@ SISe4 <- function(init,
 ##' @rdname run-methods
 ##' @export
 setMethod("run",
-          signature(model = "SISe3"),
+          signature(model = "SISe4"),
           function(model, threads, seed)
           {
               ## check that siminf_model contains all data structures
               ## required by the siminf solver and that they make sense
               validObject(model);
 
-              .Call(SISe3_run, model, threads, seed)
+              .Call(SISe4_run, model, threads, seed)
           }
 )
 
 ##' @rdname susceptible-methods
 ##' @export
 setMethod("susceptible",
-          signature("SISe3"),
-          function(model, age = 1:3, i = NULL, by = 1, ...)
+          signature("SISe4"),
+          function(model, age = 1:4, i = NULL, by = 1, ...)
           {
               if (identical(dim(model@U), c(0L, 0L)))
                   stop("Please run the model first, the 'U' matrix is empty")
 
-              age_categories <- 1:3
+              age_categories <- 1:4
               stopifnot(all(age %in% age_categories))
 
               result <- NULL
@@ -272,7 +272,7 @@ setMethod("susceptible",
                   ## Are we interested in this age category?
                   if (k %in% age) {
                       ## Select rows for the specific age category
-                      ii <- seq(from = 1 + (k - 1) * 2, to = dim(model@U)[1], by = 6)
+                      ii <- seq(from = 1 + (k - 1) * 2, to = dim(model@U)[1], by = 8)
 
                       ## Are we only interested in susceptible from
                       ## specific nodes?
@@ -295,13 +295,13 @@ setMethod("susceptible",
 ##' @rdname infected-methods
 ##' @export
 setMethod("infected",
-          signature("SISe3"),
-          function(model, age = 1:3, i = NULL, by = 1, ...)
+          signature("SISe4"),
+          function(model, age = 1:4, i = NULL, by = 1, ...)
           {
               if (identical(dim(model@U), c(0L, 0L)))
                   stop("Please run the model first, the 'U' matrix is empty")
 
-              age_categories <- 1:3
+              age_categories <- 1:4
               stopifnot(all(age %in% age_categories))
 
               result <- NULL
@@ -311,7 +311,7 @@ setMethod("infected",
                   ## Are we interested in this age category?
                   if (k %in% age) {
                       ## Select rows for the specific age category
-                      ii <- seq(from = k * 2, to = dim(model@U)[1], by = 6)
+                      ii <- seq(from = k * 2, to = dim(model@U)[1], by = 8)
 
                       ## Are we only interested in infected from
                       ## specific nodes?
@@ -334,8 +334,8 @@ setMethod("infected",
 ##' @rdname prevalence-methods
 ##' @export
 setMethod("prevalence",
-          signature("SISe3"),
-          function(model, age = 1:3, wnp = FALSE, i = NULL, by = 1, ...)
+          signature("SISe4"),
+          function(model, age = 1:4, wnp = FALSE, i = NULL, by = 1, ...)
           {
               I <- infected(model, age = age, i = i, by = by)
               S <- susceptible(model, age = age, i = i, by = by)
@@ -350,17 +350,20 @@ setMethod("prevalence",
 )
 
 ##' @name plot-methods
-##' @aliases plot plot-methods plot,SISe3-method
+##' @aliases plot plot-methods plot,SISe4-method
 ##' @docType methods
 ##' @importFrom graphics plot
 ##' @export
 setMethod("plot",
-          signature(x = "SISe3"),
+          signature(x = "SISe4"),
           function(x, t0 = NULL, ...)
       {
           callNextMethod(x,
                          t0 = t0,
-                         legend = expression(S[1], I[1], S[2], I[2], S[3], I[3]),
+                         legend = expression(S[1], I[1],
+                                             S[2], I[2],
+                                             S[3], I[3],
+                                             S[4], I[4]),
                          ...)
       }
 )
