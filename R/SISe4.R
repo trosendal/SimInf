@@ -231,6 +231,7 @@ SISe4 <- function(init,
                           N      = N,
                           tspan  = tspan,
                           events = events,
+                          sd     = init$sd,
                           ldata  = ldata,
                           gdata  = gdata,
                           v0     = v0)
