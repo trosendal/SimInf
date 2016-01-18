@@ -24,6 +24,7 @@
 #include "siminf_ldata.h"
 #include "SISe.h"
 #include "SISe3.h"
+#include "SISe4.h"
 #include "SISe_sp.h"
 #include "SISe3_sp.h"
 
@@ -36,6 +37,7 @@ static const R_CallMethodDef callMethods[] =
     {"siminf_ldata_sp", (DL_FUNC)&siminf_ldata_sp, 2},
     {"SISe_run", (DL_FUNC)&SISe_run, 3},
     {"SISe3_run", (DL_FUNC)&SISe3_run, 3},
+    {"SISe4_run", (DL_FUNC)&SISe3_run, 3},
     {"SISe_sp_run", (DL_FUNC)&SISe_sp_run, 3},
     {"SISe3_sp_run", (DL_FUNC)&SISe3_sp_run, 3},
     {NULL, NULL, 0}

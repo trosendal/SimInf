@@ -72,14 +72,6 @@ setClass("SISe4", contains = c("siminf_model"))
 ##' @param gamma_4 The recovery rate from infected to susceptible for
 ##' age category 3 
 ##' @param alpha Shed rate from infected individuals
-##' @param beta_t1 foo
-##' @param beta_t2 foo
-##' @param beta_t3 foo
-##' @param beta_t4 foo
-##' @param end_t1 foo
-##' @param end_t2 foo
-##' @param end_t3 foo
-##' @param end_t4 foo
 ##' @param epsilon The background environmental infectious pressure
 ##' @template beta-param
 ##' @return \code{SISe4}
