@@ -476,7 +476,11 @@ static int sample_select(
     if (Nstates <= 0        /* No states to sample from, we shouldn't be here. */
         || n > Nindividuals /* Can not sample this number of individuals       */
         || n < 0)           /* Can not sample negative number of individuals.  */
-        return SIMINF_ERR_SAMPLE_SELECT;
+      {
+	Rprintf("node: %i, select: %i, n: %i, proportion: %f, Nstates: %i, Nindividuals: %i\n",
+		node, select, n, proportion, Nstates, Nindividuals); 
+	return SIMINF_ERR_SAMPLE_SELECT;
+      }
 
     /* Handle cases that require no random sampling */
     if (n == 0) {
