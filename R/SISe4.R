@@ -98,7 +98,21 @@ SISe4 <- function(init,
                   end_t2    = NULL,
                   end_t3    = NULL,
                   end_t4    = NULL,
-                  epsilon   = NULL)
+                  epsilon   = NULL,
+                  lambda_sd1  = NULL,
+                  lambda_sd2  = NULL,
+                  lambda_sd3  = NULL,
+                  lambda_sd4  = NULL,
+                  lambda_sd5  = NULL,
+                  lambda_sd6  = NULL,
+                  lambda_sd7  = NULL,
+                  lambda_sd8  = NULL,
+                  lambda_sd9  = NULL,
+                  lambda_sd10 = NULL,
+                  lambda_sd11 = NULL,
+                  lambda_sd12 = NULL,
+                  lambda_sd13 = NULL,
+                  lambda_sd14 = NULL)
 {
     compartments <- c("S_1", "I_1", "S_2", "I_2", "S_3", "I_3", "S_4", "I_4")
 
@@ -116,7 +130,11 @@ SISe4 <- function(init,
     ## Check 'gdata' parameters
     check_gdata_arg(upsilon_1, upsilon_2, upsilon_3, upsilon_4,
                     gamma_1, gamma_2, gamma_3, gamma_4,
-                    alpha, beta_t1, beta_t2, beta_t3, beta_t4, epsilon)
+                    alpha, beta_t1, beta_t2, beta_t3, beta_t4, epsilon,
+                    lambda_sd1,  lambda_sd2,  lambda_sd3,  lambda_sd4,
+                    lambda_sd5,  lambda_sd6,  lambda_sd7,  lambda_sd8,
+                    lambda_sd9,  lambda_sd10, lambda_sd11, lambda_sd12,
+                    lambda_sd13, lambda_sd14 )
 
     ## Check interval endpoints
     check_integer_arg(end_t1, end_t2, end_t3, end_t4)
@@ -166,35 +184,45 @@ SISe4 <- function(init,
     colnames(N) <- as.character(seq_len(dim(N)[2]))
     rownames(N) <- compartments
 
-    G <- Matrix(c(1, 1, 0, 0, 0, 0, 0, 0,
-                  1, 1, 0, 0, 0, 0, 0, 0,
-                  0, 0, 1, 1, 0, 0, 0, 0,
-                  0, 0, 1, 1, 0, 0, 0, 0,
-                  0, 0, 0, 0, 1, 1, 0, 0,
-                  0, 0, 0, 0, 1, 1, 0, 0,
-                  0, 0, 0, 0, 0, 0, 1, 1,
-                  0, 0, 0, 0, 0, 0, 1, 1),
-                nrow   = 8,
-                ncol   = 8,
+    ## These are the transition parameters on the rows and columns
+    ## that must be updated when one of them is applied
+    
+    G <- Matrix(c(1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                  1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                  1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                  0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+                  0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+                  0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+                  0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+                  0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+                  0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1),
+                nrow   = 12,
+                ncol   = 12,
                 byrow  = TRUE,
                 sparse = TRUE)
     G <- as(G, "dgCMatrix")
     colnames(G) <- as.character(seq_len(dim(G)[2]))
-    rownames(G) <- c("S_1 -> I_1", "I_1 -> S_1",
-                     "S_2 -> I_2", "I_2 -> S_2",
-                     "S_3 -> I_3", "I_3 -> S_3",
-                     "S_4 -> I_4", "I_4 -> S_4")
+    rownames(G) <- c("S_1 -> I_1", "I_1 -> S_1", "S_1* -> I_1*",
+                     "S_2 -> I_2", "I_2 -> S_2", "S_2* -> I_2*",
+                     "S_3 -> I_3", "I_3 -> S_3", "S_3* -> I_3*",
+                     "S_4 -> I_4", "I_4 -> S_4", "S_4* -> I_4*")
 
-    S <- Matrix(c(-1,  1,  0,  0,  0,  0,  0,  0,
-                   1, -1,  0,  0,  0,  0,  0,  0,
-                   0,  0, -1,  1,  0,  0,  0,  0,
-                   0,  0,  1, -1,  0,  0,  0,  0,
-                   0,  0,  0,  0, -1,  1,  0,  0,
-                   0,  0,  0,  0,  1, -1,  0,  0,
-                   0,  0,  0,  0,  0,  0, -1,  1,
-                   0,  0,  0,  0,  0,  0,  1, -1),
+    ## These are the reactions in the columns and the compartments on
+    ## the rows
+    
+    S <- Matrix(c(-1,  1, -1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                   1, -1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+                   0,  0,  0, -1,  1, -1,  0,  0,  0,  0,  0,  0,
+                   0,  0,  0,  1, -1,  1,  0,  0,  0,  0,  0,  0,
+                   0,  0,  0,  0,  0,  0, -1,  1, -1,  0,  0,  0,
+                   0,  0,  0,  0,  0,  0,  1, -1,  1,  0,  0,  0,
+                   0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  1, -1,
+                   0,  0,  0,  0,  0,  0,  0,  0,  0,  1, -1,  1),
                 nrow   = 8,
-                ncol   = 8,
+                ncol   = 12,
                 byrow  = TRUE,
                 sparse = TRUE)
     S <- as(S, "dgCMatrix")
@@ -213,7 +241,21 @@ SISe4 <- function(init,
                gamma_1, gamma_2, gamma_3, gamma_4,
                alpha,
                beta_t1, beta_t2, beta_t3, beta_t4,
-               epsilon)
+## 14 subdomains               
+               lambda_sd1,
+               lambda_sd2,
+               lambda_sd3,
+               lambda_sd4,
+               lambda_sd5,
+               lambda_sd6,
+               lambda_sd7,
+               lambda_sd8,
+               lambda_sd9,
+               lambda_sd10,
+               lambda_sd11,
+               lambda_sd12,
+               lambda_sd13,
+               lambda_sd14)
     storage.mode(gdata) <- "double"
 
     model <- siminf_model(G      = G,

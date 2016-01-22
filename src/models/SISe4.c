@@ -33,7 +33,9 @@ enum {END_T1, END_T2, END_T3, END_T4};
 /* Offsets in global data (gdata) to parameters in the model */
 enum {UPSILON_1, UPSILON_2, UPSILON_3, UPSILON_4, 
       GAMMA_1, GAMMA_2, GAMMA_3, GAMMA_4,
-      ALPHA, BETA_T1, BETA_T2, BETA_T3, BETA_T4, EPSILON};
+      ALPHA, BETA_T1, BETA_T2, BETA_T3, BETA_T4, EPSILON, LAMBDA};
+/* There are more than one LAMBDA parameter they are indexed by adding
+   the subdomain to the LAMBDA index*/
 
 /**
  * In age category 1; susceptible to infected: S -> I
@@ -58,6 +60,29 @@ double SISe4_S_1_to_I_1(
 }
 
 /**
+ * In age category 1; susceptible to infected: S -> I
+ * Not driven by PHI 
+ * @param u The compartment state vector in node.
+ * @param v The continuous state vector in node.
+ * @param ldata The local data vector for the node.
+ * @param gdata The global data vector.
+ * @param t Current time.
+ * @param sd The sub-domain of node.
+ * @return propensity.
+ */
+double SISe4_S_1_to_I_1_intro(
+    const int *u,
+    const double *v,
+    const double *ldata,
+    const double *gdata,
+    double t,
+    int sd)
+{
+    return gdata[LAMBDA + sd] * u[S_1];
+}
+
+
+/**
  * In age category 2; susceptible to infected: S -> I
  *
  * @param u The compartment state vector in node.
@@ -77,6 +102,28 @@ double SISe4_S_2_to_I_2(
     int sd)
 {
     return gdata[UPSILON_2] * v[PHI] * u[S_2];
+}
+
+/**
+ * In age category 2; susceptible to infected: S -> I
+ * Not driven by PHI 
+ * @param u The compartment state vector in node.
+ * @param v The continuous state vector in node.
+ * @param ldata The local data vector for the node.
+ * @param gdata The global data vector.
+ * @param t Current time.
+ * @param sd The sub-domain of node.
+ * @return propensity.
+ */
+double SISe4_S_2_to_I_2_intro(
+    const int *u,
+    const double *v,
+    const double *ldata,
+    const double *gdata,
+    double t,
+    int sd)
+{
+    return gdata[LAMBDA + sd] * u[S_2];
 }
 
 /**
@@ -102,6 +149,28 @@ double SISe4_S_3_to_I_3(
 }
 
 /**
+ * In age category 3; susceptible to infected: S -> I
+ * Not driven by PHI 
+ * @param u The compartment state vector in node.
+ * @param v The continuous state vector in node.
+ * @param ldata The local data vector for the node.
+ * @param gdata The global data vector.
+ * @param t Current time.
+ * @param sd The sub-domain of node.
+ * @return propensity.
+ */
+double SISe4_S_3_to_I_3_intro(
+    const int *u,
+    const double *v,
+    const double *ldata,
+    const double *gdata,
+    double t,
+    int sd)
+{
+    return gdata[LAMBDA + sd] * u[S_3];
+}
+
+/**
  *  In age category 4; susceptible to infected: S -> I
  *
  * @param u The compartment state vector in node.
@@ -121,6 +190,28 @@ double SISe4_S_4_to_I_4(
     int sd)
 {
     return gdata[UPSILON_4] * v[PHI] * u[S_4];
+}
+
+/**
+ * In age category 4; susceptible to infected: S -> I
+ * Not driven by PHI 
+ * @param u The compartment state vector in node.
+ * @param v The continuous state vector in node.
+ * @param ldata The local data vector for the node.
+ * @param gdata The global data vector.
+ * @param t Current time.
+ * @param sd The sub-domain of node.
+ * @return propensity.
+ */
+double SISe4_S_4_to_I_4_intro(
+    const int *u,
+    const double *v,
+    const double *ldata,
+    const double *gdata,
+    double t,
+    int sd)
+{
+    return gdata[LAMBDA + sd] * u[S_4];
 }
 
 /**
@@ -272,10 +363,10 @@ SEXP SISe4_run(SEXP model, SEXP threads, SEXP seed)
 {
     int err = 0;
     SEXP result, class_name;
-    PropensityFun t_fun[] = {&SISe4_S_1_to_I_1, &SISe4_I_1_to_S_1,
-                             &SISe4_S_2_to_I_2, &SISe4_I_2_to_S_2,
-                             &SISe4_S_3_to_I_3, &SISe4_I_3_to_S_3,
-			     &SISe4_S_4_to_I_4, &SISe4_I_4_to_S_4};
+    PropensityFun t_fun[] = {&SISe4_S_1_to_I_1, &SISe4_I_1_to_S_1, &SISe4_S_1_to_I_1_intro,
+                             &SISe4_S_2_to_I_2, &SISe4_I_2_to_S_2, &SISe4_S_2_to_I_2_intro,
+                             &SISe4_S_3_to_I_3, &SISe4_I_3_to_S_3, &SISe4_S_3_to_I_3_intro,
+			     &SISe4_S_4_to_I_4, &SISe4_I_4_to_S_4, &SISe4_S_4_to_I_4_intro};
 
     if (R_NilValue == model || S4SXP != TYPEOF(model))
         Rf_error("Invalid SISe4 model");
