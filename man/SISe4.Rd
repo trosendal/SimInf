@@ -9,7 +9,11 @@ SISe4(init, tspan, events = NULL, phi = NULL, upsilon_1 = NULL,
   gamma_2 = NULL, gamma_3 = NULL, gamma_4 = NULL, alpha = NULL,
   beta_t1 = NULL, beta_t2 = NULL, beta_t3 = NULL, beta_t4 = NULL,
   end_t1 = NULL, end_t2 = NULL, end_t3 = NULL, end_t4 = NULL,
-  epsilon = NULL)
+  epsilon = NULL, lambda_sd1 = NULL, lambda_sd2 = NULL,
+  lambda_sd3 = NULL, lambda_sd4 = NULL, lambda_sd5 = NULL,
+  lambda_sd6 = NULL, lambda_sd7 = NULL, lambda_sd8 = NULL,
+  lambda_sd9 = NULL, lambda_sd10 = NULL, lambda_sd11 = NULL,
+  lambda_sd12 = NULL, lambda_sd13 = NULL, lambda_sd14 = NULL)
 }
 \arguments{
 \item{init}{A \code{data.frame} with the initial state in each
