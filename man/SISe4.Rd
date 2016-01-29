@@ -76,6 +76,34 @@ in the fourth interval of the year.}
 \item{end_t4}{The non-inclusive day that ends interval 4.}
 
 \item{epsilon}{The background environmental infectious pressure}
+
+\item{lambda_sd1}{the introduction rate for subdomain1}
+
+\item{lambda_sd2}{the introduction rate for subdomain2}
+
+\item{lambda_sd3}{the introduction rate for subdomain3}
+
+\item{lambda_sd4}{the introduction rate for subdomain4}
+
+\item{lambda_sd5}{the introduction rate for subdomain5}
+
+\item{lambda_sd6}{the introduction rate for subdomain6}
+
+\item{lambda_sd7}{the introduction rate for subdomain7}
+
+\item{lambda_sd8}{the introduction rate for subdomain8}
+
+\item{lambda_sd9}{the introduction rate for subdomain9}
+
+\item{lambda_sd10}{the introduction rate for subdomain10}
+
+\item{lambda_sd11}{the introduction rate for subdomain11}
+
+\item{lambda_sd12}{the introduction rate for subdomain12}
+
+\item{lambda_sd13}{the introduction rate for subdomain13}
+
+\item{lambda_sd14}{the introduction rate for subdomain14}
 }
 \value{
 \code{SISe4}

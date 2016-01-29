@@ -73,6 +73,20 @@ setClass("SISe4", contains = c("siminf_model"))
 ##' age category 3 
 ##' @param alpha Shed rate from infected individuals
 ##' @param epsilon The background environmental infectious pressure
+##' @param lambda_sd1 the introduction rate for subdomain1 
+##' @param lambda_sd2 the introduction rate for subdomain2
+##' @param lambda_sd3 the introduction rate for subdomain3
+##' @param lambda_sd4 the introduction rate for subdomain4
+##' @param lambda_sd5 the introduction rate for subdomain5
+##' @param lambda_sd6 the introduction rate for subdomain6
+##' @param lambda_sd7 the introduction rate for subdomain7
+##' @param lambda_sd8 the introduction rate for subdomain8
+##' @param lambda_sd9 the introduction rate for subdomain9
+##' @param lambda_sd10 the introduction rate for subdomain10
+##' @param lambda_sd11 the introduction rate for subdomain11
+##' @param lambda_sd12 the introduction rate for subdomain12
+##' @param lambda_sd13 the introduction rate for subdomain13
+##' @param lambda_sd14 the introduction rate for subdomain14
 ##' @template beta-param
 ##' @return \code{SISe4}
 ##' @include check_arguments.R
