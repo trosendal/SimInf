@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>SimInf by stewid</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>SimInf</h1>
+        <p>A framework for data-driven stochastic disease spread simulations</p>
+
+        <p class="view"><a href="https://github.com/stewid/SimInf">View the Project on GitHub <small>stewid/SimInf</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/stewid/SimInf/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/stewid/SimInf/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/stewid/SimInf">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><img src="https://raw.githubusercontent.com/stewid/SimInf/master/inst/logo/logo.png" alt=""></p>
+
+<blockquote>
+<p>A flexible and efficient framework for data-driven stochastic disease spread simulations</p>
+</blockquote>
+
+<p>Livestock movements are important for the spread of many infectious
+diseases between herds. The package provides an efficient and flexible
+framework for data-driven stochastic disease spread modelling that
+integrates within-herd infection dynamics as continuous-time Markov
+chains and livestock movements between herds as scheduled events. The
+core simulation solver is implemented in C and uses OpenMP (if
+available) to divide work over multiple processors. The package
+contains template models and can be extended with user defined models.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To install the latest release on CRAN</p>
+
+<div class="highlight highlight-source-r"><pre>install.packages(<span class="pl-s"><span class="pl-pds">"</span>SimInf<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>To install the development version of <code>SimInf</code>, it's easiest to use
+the devtools package:</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"># install.packages("devtools")</span>
+library(<span class="pl-smi">devtools</span>)
+install_github(<span class="pl-s"><span class="pl-pds">"</span>stewid/SimInf<span class="pl-pds">"</span><span class="pl-pds">"</span>)</span></pre></div>
+
+<p>Another alternative is to use <code>git</code> and <code>make</code></p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-k">$</span> <span class="pl-smi">git</span> <span class="pl-smi">clone</span> <span class="pl-smi">https</span><span class="pl-k">:</span><span class="pl-k">//</span><span class="pl-smi">github.com</span><span class="pl-k">/</span><span class="pl-smi">stewid</span><span class="pl-k">/</span><span class="pl-smi">SimInf.git</span>
+<span class="pl-k">$</span> <span class="pl-smi">cd</span> <span class="pl-smi">SimInf</span>
+<span class="pl-k">$</span> <span class="pl-smi">make</span> <span class="pl-smi">install</span></pre></div>
+
+<h3>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h3>
+
+<h4>
+<a id="on-a-debian-based-system" class="anchor" href="#on-a-debian-based-system" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On a Debian based system</h4>
+
+<p>Before installing <code>SimInf</code> you need to install
+<a href="http://www.gnu.org/software/gsl/">The GNU Scientific Library</a> (GSL).</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">apt</span><span class="pl-k">-</span><span class="pl-smi">get</span> <span class="pl-smi">install</span> <span class="pl-smi">libgsl0</span><span class="pl-k">-</span><span class="pl-smi">dev</span></pre></div>
+
+<p>You may need to do:</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">sudo</span> <span class="pl-smi">apt</span><span class="pl-k">-</span><span class="pl-smi">get</span> <span class="pl-smi">install</span> <span class="pl-smi">libgsl0</span><span class="pl-k">-</span><span class="pl-smi">dev</span></pre></div>
+
+<h4>
+<a id="on-a-windows-machine" class="anchor" href="#on-a-windows-machine" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>On a Windows machine</h4>
+
+<p>To install the development version of <code>SimInf</code> you first need to
+download and install
+<a href="http://cran.r-project.org/bin/windows/Rtools/">Rtools</a></p>
+
+<h1>
+<a id="authors" class="anchor" href="#authors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors</h1>
+
+<ul>
+<li>Pavol Bauer (Uppsala University, Sweden)</li>
+<li>Stefan Engblom (Uppsala University, Sweden)</li>
+<li>Stefan Widgren (National Veterinary Institute, Sweden) <strong>(Maintainer)</strong>
+</li>
+</ul>
+
+<h1>
+<a id="acknowledgments" class="anchor" href="#acknowledgments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgments</h1>
+
+<p>This work was financially supported by the Swedish Research Council
+within the UPMARC Linnaeus centre of Excellence (Pavol Bauer and
+Stefan Engblom).</p>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<p>The <code>SimInf</code> package is licensed under the GPLv3.</p>
+
+<p>Any suggestions, bug reports, forks and pull requests are
+appreciated. Get in touch.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/stewid">stewid</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
