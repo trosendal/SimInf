@@ -307,17 +307,20 @@ pmcmc_progress <- function(object, i, verbose) {
 }
 
 ##' @noRd
-pmcmc_proposal <- function(object, i) {
+pmcmc_proposal <- function(object, i, nupdate = 50) {
     npars <- length(object@pars)
     j <- seq(from = 5, by = 1, length.out = npars)
 
-    if (runif(1) < object@adaptmix || i <= 2 * npars) {
-        sigma <- diag(0.1^2 / npars, npars)
+    if (runif(1) < object@adaptmix || i <= nupdate) {
+        sigma <- diag((object@chain[seq_len(i - 1), j] * 0.1)^2, npars)
     } else if (npars == 1) {
         sigma <- matrix(2.38^2 * stats::var(object@chain[seq_len(i - 1), j]))
     } else {
         sigma <- 2.38^2 / npars * stats::cov(object@chain[seq_len(i - 1), j])
     }
+
+    if (i > nupdate && all(sigma == 0))
+        error("We have made it past 'nupdate' and variance of the chain is still 0")
 
     mvtnorm::rmvnorm(n = 1, mean = object@chain[i - 1, j], sigma = sigma)[1, ]
 }
