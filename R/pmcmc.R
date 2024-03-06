@@ -312,7 +312,7 @@ pmcmc_proposal <- function(object, i, nupdate = 50) {
     j <- seq(from = 5, by = 1, length.out = npars)
 
     if (runif(1) < object@adaptmix || i <= nupdate) {
-        sigma <- diag((object@chain[seq_len(i - 1), j] * 0.1)^2, npars)
+        sigma <- diag((object@chain[(i - 1), j] * 0.1)^2, npars)
     } else if (npars == 1) {
         sigma <- matrix(2.38^2 * stats::var(object@chain[seq_len(i - 1), j]))
     } else {
