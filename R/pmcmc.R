@@ -327,7 +327,7 @@ pmcmc_proposal <- function(object, i, nupdate = nupdate) {
     }
 
     if (i > nupdate && all(sigma == 0))
-        error("We have made it past 'nupdate' and variance of the chain is still 0")
+        stop("We have made it past 'nupdate' and variance of the chain is still 0")
 
     mvtnorm::rmvnorm(n = 1, mean = object@chain[i - 1, j], sigma = sigma)[1, ]
 }
