@@ -16,7 +16,12 @@ continue(object, ...)
   post_gen = NULL
 )
 
-\S4method{continue}{SimInf_pmcmc}(object, niter, ..., verbose = getOption("verbose", FALSE))
+\S4method{continue}{SimInf_pmcmc}(
+  object,
+  niter,
+  verbose = getOption("verbose", FALSE),
+  nupdate = nupdate
+)
 }
 \arguments{
 \item{object}{The \code{SimInf_abc} to continue from.}
@@ -42,8 +47,7 @@ argument of type \code{SimInf_abc} with the current state of
 the fitting process. This function can be useful to, for
 example, save and inspect intermediate results.}
 
-\item{niter}{An integer specifying the number of iterations to run
-the PMCMC.}
+\item{niter}{An integer with the number of iterations to run of the chain}
 }
 \value{
 A \code{SimInf_abc} object.

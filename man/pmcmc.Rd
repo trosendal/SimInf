@@ -14,7 +14,8 @@ pmcmc(
   niter,
   theta = NULL,
   adaptmix = 0.05,
-  verbose = getOption("verbose", FALSE)
+  verbose = getOption("verbose", FALSE),
+  nupdate = 2
 )
 
 \S4method{pmcmc}{SimInf_model}(
@@ -26,7 +27,8 @@ pmcmc(
   niter,
   theta = NULL,
   adaptmix = 0.05,
-  verbose = getOption("verbose", FALSE)
+  verbose = getOption("verbose", FALSE),
+  nupdate = 2
 )
 }
 \arguments{
@@ -68,16 +70,19 @@ in \code{priors} must be only in either \code{gdata} or
 \item{npart}{An integer with the number of particles (> 1) to use
 at each timestep.}
 
-\item{niter}{An integer specifying the number of iterations to run
-the PMCMC.}
+\item{niter}{An integer with the number of iterations to run of the chain}
 
-\item{theta}{FIXME}
+\item{theta}{The starting value(s) for the parameters}
 
 \item{adaptmix}{Mixing proportion for adaptive proposal.}
 
 \item{verbose}{prints diagnostic messages when \code{TRUE}. The
 default is to retrieve the global option \code{verbose} and
 use \code{FALSE} if it is not set.}
+
+\item{nupdate}{The nupdate parameter indicated the number of
+iterations the model runs before calculating the variance from
+the chain.}
 }
 \description{
 Particle Markov chain Monte Carlo (PMCMC) algorithm

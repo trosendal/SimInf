@@ -1,4 +1,4 @@
-## This file is part of SimInf, a framework for stochastic
+ ## This file is part of SimInf, a framework for stochastic
 ## disease spread simulations.
 ##
 ## Copyright (C) 2015 -- 2024 Stefan Widgren
@@ -167,9 +167,12 @@ setMethod(
 ##' @template priors-param
 ##' @template npart-param
 ##' @template niter-param
-##' @param theta FIXME
+##' @param theta The starting value(s) for the parameters
 ##' @param adaptmix Mixing proportion for adaptive proposal.
 ##' @template verbose-param
+##' @param nupdate The nupdate parameter indicated the number of
+##'     iterations the model runs before calculating the variance from
+##'     the chain.
 ##' @references
 ##'
 ##' \Andrieu2010
@@ -181,7 +184,8 @@ setGeneric(
     signature = "model",
     function(model, obs_process, data, priors, npart, niter,
              theta = NULL, adaptmix = 0.05,
-             verbose = getOption("verbose", FALSE)) {
+             verbose = getOption("verbose", FALSE),
+             nupdate = 2) {
         standardGeneric("pmcmc")
     }
 )
@@ -192,7 +196,7 @@ setMethod(
     "pmcmc",
     signature(model = "SimInf_model"),
     function(model, obs_process, data, priors, npart, niter, theta,
-             adaptmix, verbose) {
+             adaptmix, verbose, nupdate) {
         check_integer_arg(npart)
         npart <- as.integer(npart)
         if (any(length(npart) != 1L,
@@ -255,7 +259,7 @@ setMethod(
                 return(object)
         }
 
-        continue(object, niter = niter, verbose = verbose)
+        continue(object, niter = niter, verbose = verbose, nupdate = nupdate)
     }
 )
 
@@ -310,7 +314,7 @@ pmcmc_progress <- function(object, i, verbose) {
 }
 
 ##' @noRd
-pmcmc_proposal <- function(object, i, nupdate = 50) {
+pmcmc_proposal <- function(object, i, nupdate = nupdate) {
     npars <- length(object@pars)
     j <- seq(from = 5, by = 1, length.out = npars)
 
@@ -347,8 +351,9 @@ setMethod(
 setMethod(
     "continue",
     signature(object = "SimInf_pmcmc"),
-    function(object, niter, ...,
-             verbose = getOption("verbose", FALSE)) {
+    function(object, niter,
+             verbose = getOption("verbose", FALSE),
+             nupdate = nupdate) {
         check_integer_arg(niter)
         niter <- as.integer(niter)
         if (any(length(niter) != 1L, any(niter <= 0L)))
@@ -387,7 +392,7 @@ setMethod(
         for (i in iterations) {
             ## Proposal
             accept <- 0
-            theta_prop <- pmcmc_proposal(object, i)
+            theta_prop <- pmcmc_proposal(object, i, nupdate = nupdate)
             logPrior_prop <- dpriors(theta_prop, object@priors)
 
             if (is.finite(logPrior_prop)) {
