@@ -41,9 +41,11 @@ the observation process.}
 \item{\code{data}}{A \code{data.frame} holding the time series data for
 the observation process.}
 
-\item{\code{chain}}{FIXME}
+\item{\code{chain}}{A matrix where each row contains \code{logPost},
+\code{logLik}, \code{logPrior}, \code{accept}, and the
+\code{parameters} for each iteration.}
 
-\item{\code{pf}}{FIXME}
+\item{\code{pf}}{List with the filtered trajectory from each iteration.}
 
 \item{\code{adaptmix}}{Mixing proportion for adaptive proposal.}
 }}

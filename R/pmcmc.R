@@ -1,7 +1,7 @@
 ## This file is part of SimInf, a framework for stochastic
 ## disease spread simulations.
 ##
-## Copyright (C) 2015 -- 2023 Stefan Widgren
+## Copyright (C) 2015 -- 2024 Stefan Widgren
 ##
 ## SimInf is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -31,8 +31,10 @@
 ##'     the observation process.
 ##' @slot data A \code{data.frame} holding the time series data for
 ##'     the observation process.
-##' @slot chain FIXME
-##' @slot pf FIXME
+##' @slot chain A matrix where each row contains \code{logPost},
+##'     \code{logLik}, \code{logPrior}, \code{accept}, and the
+##'     \code{parameters} for each iteration.
+##' @slot pf List with the filtered trajectory from each iteration.
 ##' @slot adaptmix Mixing proportion for adaptive proposal.
 ##' @export
 setClass(
@@ -164,14 +166,15 @@ setMethod(
 ##' @template data-param
 ##' @template priors-param
 ##' @template npart-param
-##' @param niter An integer specifying the number of iterations to run
-##'     the PMCMC.
+##' @template niter-param
 ##' @param theta FIXME
 ##' @param adaptmix Mixing proportion for adaptive proposal.
 ##' @template verbose-param
 ##' @references
 ##'
 ##' \Andrieu2010
+##'
+##' \Roberts2009
 ##' @export
 setGeneric(
     "pmcmc",
@@ -311,8 +314,8 @@ pmcmc_proposal <- function(object, i, nupdate = 50) {
     npars <- length(object@pars)
     j <- seq(from = 5, by = 1, length.out = npars)
 
-    if (runif(1) < object@adaptmix || i <= nupdate) {
-        sigma <- diag((object@chain[(i - 1), j] * 0.1)^2, npars)
+    if (runif(1) < object@adaptmix || i <= nupdate * npars) {
+        sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
     } else if (npars == 1) {
         sigma <- matrix(2.38^2 * stats::var(object@chain[seq_len(i - 1), j]))
     } else {
@@ -339,7 +342,7 @@ setMethod(
 )
 
 ##' @rdname continue
-##' @param niter FIXME
+##' @template niter-param
 ##' @export
 setMethod(
     "continue",
