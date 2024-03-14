@@ -318,7 +318,14 @@ pmcmc_proposal <- function(object, i, nupdate = nupdate) {
     npars <- length(object@pars)
     j <- seq(from = 5, by = 1, length.out = npars)
 
-    if (runif(1) < object@adaptmix || i <= nupdate * npars) {
+    if (i <= nupdate) {
+        ## Here we want to do something to change sigma depending on
+        ## acceptance rate. Too high acceptance rate --> we want a
+        ## higher sigma to let the search be broader, Too low
+        ## acceptance rate --> we want a smaller sigma to reduce the
+        ## jump size. For now we just do the same as adaptmix
+        sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
+    } else if (runif(1) < object@adaptmix) {
         sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
     } else if (npars == 1) {
         sigma <- matrix(2.38^2 * stats::var(object@chain[seq_len(i - 1), j]))
