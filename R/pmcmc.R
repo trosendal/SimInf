@@ -399,7 +399,7 @@ setMethod(
         for (i in iterations) {
             ## Proposal
             accept <- 0
-            theta_prop <- pmcmc_proposal(object, i, nupdate = nupdate)
+            theta_prop <- pmcmc_proposal(object, i, nupdate = nupdate, sigma = sigma)
             logPrior_prop <- dpriors(theta_prop, object@priors)
 
             if (is.finite(logPrior_prop)) {
