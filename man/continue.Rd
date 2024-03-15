@@ -20,7 +20,8 @@ continue(object, ...)
   object,
   niter,
   verbose = getOption("verbose", FALSE),
-  nupdate = nupdate
+  nupdate = nupdate,
+  sigma = sigma
 )
 }
 \arguments{

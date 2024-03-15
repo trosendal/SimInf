@@ -15,7 +15,8 @@ pmcmc(
   theta = NULL,
   adaptmix = 0.05,
   verbose = getOption("verbose", FALSE),
-  nupdate = 2
+  nupdate = 2,
+  sigma = NULL
 )
 
 \S4method{pmcmc}{SimInf_model}(
@@ -28,7 +29,8 @@ pmcmc(
   theta = NULL,
   adaptmix = 0.05,
   verbose = getOption("verbose", FALSE),
-  nupdate = 2
+  nupdate = 2,
+  sigma = NULL
 )
 }
 \arguments{
@@ -83,6 +85,8 @@ use \code{FALSE} if it is not set.}
 \item{nupdate}{The nupdate parameter indicated the number of
 iterations the model runs before calculating the variance from
 the chain.}
+
+\item{sigma}{the starting covariace matrix up to nupdate}
 }
 \description{
 Particle Markov chain Monte Carlo (PMCMC) algorithm

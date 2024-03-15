@@ -173,6 +173,7 @@ setMethod(
 ##' @param nupdate The nupdate parameter indicated the number of
 ##'     iterations the model runs before calculating the variance from
 ##'     the chain.
+##' @param sigma the starting covariace matrix up to nupdate
 ##' @references
 ##'
 ##' \Andrieu2010
@@ -185,7 +186,8 @@ setGeneric(
     function(model, obs_process, data, priors, npart, niter,
              theta = NULL, adaptmix = 0.05,
              verbose = getOption("verbose", FALSE),
-             nupdate = 2) {
+             nupdate = 2,
+             sigma = NULL) {
         standardGeneric("pmcmc")
     }
 )
@@ -196,7 +198,7 @@ setMethod(
     "pmcmc",
     signature(model = "SimInf_model"),
     function(model, obs_process, data, priors, npart, niter, theta,
-             adaptmix, verbose, nupdate) {
+             adaptmix, verbose, nupdate, sigma) {
         check_integer_arg(npart)
         npart <- as.integer(npart)
         if (any(length(npart) != 1L,
@@ -259,7 +261,7 @@ setMethod(
                 return(object)
         }
 
-        continue(object, niter = niter, verbose = verbose, nupdate = nupdate)
+        continue(object, niter = niter, verbose = verbose, nupdate = nupdate, sigma = sigma)
     }
 )
 
@@ -314,17 +316,14 @@ pmcmc_progress <- function(object, i, verbose) {
 }
 
 ##' @noRd
-pmcmc_proposal <- function(object, i, nupdate = nupdate) {
+pmcmc_proposal <- function(object, i, nupdate = nupdate, sigma = sigma) {
     npars <- length(object@pars)
     j <- seq(from = 5, by = 1, length.out = npars)
 
     if (i <= nupdate) {
-        ## Here we want to do something to change sigma depending on
-        ## acceptance rate. Too high acceptance rate --> we want a
-        ## higher sigma to let the search be broader, Too low
-        ## acceptance rate --> we want a smaller sigma to reduce the
-        ## jump size. For now we just do the same as adaptmix
-        sigma <- structure(c(4.45E-7, 1.24E-5, 1.24E-5, 0.087), dim = c(2L, 2L))
+        if (is.null(sigma)) {
+            sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
+        }
     } else if (runif(1) < object@adaptmix) {
         sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
     } else if (npars == 1) {
@@ -360,7 +359,8 @@ setMethod(
     signature(object = "SimInf_pmcmc"),
     function(object, niter,
              verbose = getOption("verbose", FALSE),
-             nupdate = nupdate) {
+             nupdate = nupdate,
+             sigma = sigma) {
         check_integer_arg(niter)
         niter <- as.integer(niter)
         if (any(length(niter) != 1L, any(niter <= 0L)))
