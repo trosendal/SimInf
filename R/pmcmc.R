@@ -324,7 +324,7 @@ pmcmc_proposal <- function(object, i, nupdate = nupdate) {
         ## higher sigma to let the search be broader, Too low
         ## acceptance rate --> we want a smaller sigma to reduce the
         ## jump size. For now we just do the same as adaptmix
-        sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
+        sigma <- structure(c(4.45E-7, 1.24E-5, 1.24E-5, 0.087), dim = c(2L, 2L))
     } else if (runif(1) < object@adaptmix) {
         sigma <- diag((object@chain[1, j] / 10)^2 / npars, npars)
     } else if (npars == 1) {
