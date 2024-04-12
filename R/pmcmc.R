@@ -337,6 +337,13 @@ pmcmc_proposal <- function(x, i, n_accepted, theta_mean, covmat_emp,
             scaling <- min(scaling * exp(l * m), max_scaling)
         }
 
+        ## Give some feedback on the process
+        if (i %% 100 == 0) {
+            acc <- mean(x@chain[seq(from = i - 100, to = i), "accept"])
+            cat(" The scaling is currently:", scaling, "\n",
+                "We have run", i, "updates", "\n",
+                "The acceptance in the past 100 updates is:", acc, "\n")
+        }
         covmat <- scaling^2 * diag((get_theta(x, 1) / 10)^2 / n_pars(x))
     } else {
         covmat <- 2.38^2 / n_pars(x) * covmat_emp
