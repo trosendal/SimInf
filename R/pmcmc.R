@@ -339,7 +339,7 @@ pmcmc_proposal <- function(x, i, n_accepted, theta_mean, covmat_emp,
 
         ## Give some feedback on the process
         if (i %% 100 == 0) {
-            acc <- mean(x@chain[seq(from = i - 100, to = i), "accept"])
+            acc <- mean(x@chain[seq(from = i - 101, to = i - 1L), "accept"])
             cat(" The scaling is currently:", scaling, "\n",
                 "We have run", i, "updates", "\n",
                 "The acceptance in the past 100 updates is:", acc, "\n")
