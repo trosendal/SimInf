@@ -450,6 +450,15 @@ setMethod(
                 logLik_prop <- pf_prop@loglik
 
                 alpha <- exp(logLik_prop + logPrior_prop - logLik - logPrior)
+
+                ## Give some feedback on the process
+                if (i %% 10 == 0) {
+                    cat("Proposal=", proposal,
+                        "alpha=", alpha,
+                        "; logLik_prop=", logLik_prop,
+                        "; logLik=", logLik, "\n")
+                }
+
                 if (is.finite(alpha) && runif(1) < alpha) {
                     logLik <- logLik_prop
                     logPrior <- logPrior_prop
