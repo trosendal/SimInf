@@ -453,7 +453,7 @@ setMethod(
 
                 ## Give some feedback on the process
                 if (i %% 10 == 0) {
-                    cat("Proposal=", proposal,
+                    cat("Proposal=", proposal$theta,
                         "alpha=", alpha,
                         "; logLik_prop=", logLik_prop,
                         "; logLik=", logLik, "\n")
